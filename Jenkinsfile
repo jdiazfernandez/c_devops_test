@@ -1,6 +1,16 @@
 pipeline {
     agent any
 
+    triggers {
+        githubPullRequest {
+            
+            cron('H/5 * * * *') // ejecuta cada 5 minutos
+            triggerPhrase('Jenkins test this please') // opcional: frase para iniciar build
+            onlyTriggerPhrase(false)
+            useGitHubHooks(true)
+        }
+    }
+
     tools {
         'hudson.plugins.cmake.CmakeTool' 'cmake' // Name of the CMake installation configured in Jenkins
     }
@@ -18,6 +28,7 @@ pipeline {
                 ])
             }
         }
+        
 
         stage('Build') {
             steps {
